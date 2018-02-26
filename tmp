@@ -1,0 +1,21 @@
+To ward a More Real-World Example
+Let’s extend this example to allow negative and fractional temperature values. The
+math part of the program is fine — Perl normally makes no distinction between
+integers and floating-point numbers. We do, however, need to modify the regex to
+let negative and floating-point values pass. We can insert a leading ! -? " to allow a
+leading minus sign. In fact, we may as well make that ! [-+]? " to allow a leading
+plus sign, too.
+To allow an optional decimal part, we add ! ( \.[0-9],)? " . The escaped dot
+matches a literal period, so ! \.[0-9]+ " is used to match a period followed by any
+number of optional digits. Since ! \.[0-9]+ " is enclosed by ! ( )? " , the whole subex-
+pr ession becomes optional. (Realize that this is very differ ent fr om ! \.?[0-9]+ " ,
+which incorrectly allows additional digits to match even if ! \." does not match.)
+ ̇ ̇ ̇
+Putting this all together, we get
+if ($celsius = ̃ m/ˆ[-+]?[0-9]+(\.[0-9]+)?$/)
+{
+as our check line. It allows numbers such as 32 , -3.723 , and +98.6 . It is actually
+not quite perfect: it doesn’t allow a number that begins with a decimal point (such
+as .357 ). Of course, the user can just add a leading zero to allow it to match (e.g.,
+0.357 ), so I don’t consider it a major shortcoming. This floating-point problem can
+have some interesting twists, and I look at it in detail in Chapter 5 ( ☞ 194).
